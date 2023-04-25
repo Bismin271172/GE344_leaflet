@@ -1,0 +1,261 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tour</title>
+</head>
+<body>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+ integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+ crossorigin="" />
+ 
+ <!-- W3 CSS template -->
+ <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+ 
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+ <style>
+ #mapid {
+ height: 800px;
+ }
+ </style>
+
+ <!-- สร้างตารางเพื่อนำข้อมูลไว้ฝั่งซ้ายมือ -->
+ <div class="w3-row">
+ <div id="mapid" class="w3-half"></div>
+ <div id="content" class="w3-half">
+ <table class="w3-table w3-striped">
+ <tr>
+ <th>ชื่อแหล่งท่องเที่ยว</th>
+ <th>ประเภท</th>
+ <th>ระดับ</th>
+ </tr>
+ <tr>
+ <td>น้ำตก A</td>
+ <td>ธรรมชาติ</td>
+ <td>A</td>
+ </tr>
+ </table>
+ </div>
+ </div>
+ 
+ <script>
+    var map = L.map("mapid").setView([6.159648224420873, 101.67180500130115], 8);
+ 
+    var osm = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    ).addTo(map);
+    var gsat = L.tileLayer(
+        "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+    ).addTo(map);
+ 
+ var baseMaps = {
+    OSM: osm,
+    GoogleSat: gsat,
+ };
+
+    var tour = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bankaena",
+        "type": "Natural",
+        "level": 8
+      },
+      "geometry": {
+        "coordinates": [
+          101.82393103769789,
+          6.342825994676247
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Banyaro",
+        "type": "Natural",
+        "level": 8
+      },
+      "geometry": {
+        "coordinates": [
+          101.82058946501076,
+          6.312040869815334
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Banlubodiyae",
+        "type": "Natural",
+        "level": 9
+      },
+      "geometry": {
+        "coordinates": [
+          101.79025826676343,
+          6.27409983896348
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bantalo",
+        "type": "Natural",
+        "level": 7
+      },
+      "geometry": {
+        "coordinates": [
+          101.7555573196181,
+          6.293901059336093
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bankhaonoi",
+        "type": "Natural",
+        "level": 6
+      },
+      "geometry": {
+        "coordinates": [
+          101.7211134165264,
+          6.259280368761324
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bankalisa",
+        "type": "Special",
+        "level": 7
+      },
+      "geometry": {
+        "coordinates": [
+          101.67638775131184,
+          6.232578711109994
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bankanawa",
+        "type": "Special",
+        "level": 9
+      },
+      "geometry": {
+        "coordinates": [
+          101.6614791962416,
+          6.248037731554092
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bansamo",
+        "type": "Culture",
+        "level": 9
+      },
+      "geometry": {
+        "coordinates": [
+          101.74013467644295,
+          6.221335500967257
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Banbangokubo",
+        "type": "Culture",
+        "level": 9
+      },
+      "geometry": {
+        "coordinates": [
+          101.76301159715541,
+          6.223379738893726
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Banpase",
+        "type": "Culture",
+        "level": 6
+      },
+      "geometry": {
+        "coordinates": [
+          101.68795473369875,
+          6.194376370477414
+        ],
+        "type": "Point"
+      }
+    }
+  ]
+}
+
+
+var tourLayer = L.geoJSON(tour, {
+ pointToLayer: function (feature, latlng) {
+ return L.marker(latlng).bindPopup(feature.properties.name);
+ },
+ onEachFeature: function (feature, layer) {
+ layer.on("mouseover", function () {
+ document
+ .getElementById(feature.properties.name)
+ .classList.add("w3-red");
+ });
+ 
+ layer.on("mouseout", function () {
+ document
+ .getElementById(feature.properties.name)
+ .classList.remove("w3-red");
+ });
+ },
+ }).addTo(map);
+ 
+ var cont = "";
+ cont += "<table class='w3-table w3-striped'>";
+ cont += "<tr>";
+ cont += "<th>ชื่อแหล่งท่องเที่ยว</th>";
+ cont += "<th>ประเภท</th>";
+ cont += "<th>ระดับ</th>";
+ cont += "</tr>";
+ for (let i in tour.features) {
+ cont += "<tr id=" + tour.features[i].properties.name + ">";
+ cont += "<td>" + tour.features[i].properties.name + "</td>";
+ cont += "<td>" + tour.features[i].properties.type + "</td>";
+ cont += "<td>" + tour.features[i].properties.level + "</td>";
+ cont += "</tr>";
+ }
+ cont += "</table>";
+ console.log(cont);
+ document.getElementById("content").innerHTML = cont;
+
+ var overlays = {สถานที่ท่องเที่ยว: tourLayer};
+ //add leyer control
+ L.control.layers(baseMaps, overlays).addTo(map); //ชั้นข้อมูล
+</script>
+
+
+
+</body>
+</html>
